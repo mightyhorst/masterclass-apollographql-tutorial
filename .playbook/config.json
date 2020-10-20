@@ -1,0 +1,48 @@
+{
+    "docker": "masterclass/ubuntu-node",
+    "tests": ".playbook/tests",
+    "docs": ".playbook/docs",
+    "cli": ".playbook/cli",
+    "starterKit": "init commit",
+    "ignoreCommits": ["ignore:"],
+    "meta": {
+        "categoryId": [
+            {
+                "00-apollo-graphql-tutorial": "Apollo GraphQL Tutorial"
+            }
+        ],
+        "sceneIds": [
+            {
+                "00-intro: ": "0. Introduction"
+            },
+            {
+                "01-build-a-schema": "1. Build a schema"
+            },
+            {
+                "02-connect-data-sources": "2. Connect to data sources"
+            },
+            {
+                "03-write-query-resolvers": "3. Write query resolvers"
+            },
+            {
+                "04-write-mutation-resolvers": "4. Write mutation resolvers"
+            },
+            {
+                "05-connect-to-apollo-studio": "5. Connect to Apollo Studio"
+            },
+            {
+                "06-set-up-apollo-client": "6. Set up Apollo Client"
+            },
+            {
+                "07-fetch-data-with-queries": "7. Fetch data with queries"
+            },
+            {
+                "08-update-data-with-mutations": "8. Update data with mutations"
+            },
+            {
+                "09-manage-local-state": "9. Manage local state"
+            }
+        ],
+        "stepIds": []
+    }
+}
