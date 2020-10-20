@@ -1,0 +1,101 @@
+## Paginate results
+
+Currently, `Query.launches` returns a long list of `Launch` objects. This is often more information than a client needs at once, and fetching that much data can be slow. We can improve this field's performance by implementing **pagination**.
+
+Pagination ensures that our server sends data in small chunks. We recommend **cursor-based pagination** for numbered pages, because it eliminates the possibility of skipping an item or displaying the same item more than once. In cursor-based pagination, a constant pointer (or cursor) is used to keep track of where to start in the data set when fetching the next set of results.
+
+Let's set up cursor-based pagination. In `src/schema.js`, update `Query.launches` to match the following, and also add a new type called `LaunchConnection` like so:
+
+```graphql{2-11,16-25}:title=src/schema.js
+type Query {
+  launches( # replace the current launches query with this one.
+    """
+    The number of results to show. Must be >= 1. Default = 20
+    """
+    pageSize: Int
+    """
+    If you add a cursor here, it will only return results _after_ this cursor
+    """
+    after: String
+  ): LaunchConnection!
+  launch(id: ID!): Launch
+  me: User
+}
+
+"""
+Simple wrapper around our list of launches that contains a cursor to the
+last item in the list. Pass this cursor to the launches query to fetch results
+after these.
+"""
+type LaunchConnection { # add this below the Query type as an additional type.
+  cursor: String!
+  hasMore: Boolean!
+  launches: [Launch]!
+}
+```
+
+Now, `Query.launches` takes in two parameters (`pageSize` and `after`) and returns a `LaunchConnection` object. The `LaunchConnection` includes:
+
+* A list of `launches` (the actual data requested by a query)
+* A `cursor` that indicates the current position in the data set
+* A `hasMore` boolean that indicates whether the data set contains any more items beyond those included in `launches`
+
+Open `src/utils.js` and check out the `paginateResults` function. This is a helper function for paginating data from the server.
+
+Now, let's update the necessary resolver functions to accommodate pagination. Import `paginateResults` and replace the `launches` resolver function in `src/resolvers.js` with the code below:
+
+```js{1,5-26}:title=src/resolvers.js
+const { paginateResults } = require('./utils');
+
+module.exports = {
+  Query: {
+    launches: async (_, { pageSize = 20, after }, { dataSources }) => {
+      const allLaunches = await dataSources.launchAPI.getAllLaunches();
+      // we want these in reverse chronological order
+      allLaunches.reverse();
+
+      const launches = paginateResults({
+        after,
+        pageSize,
+        results: allLaunches
+      });
+
+      return {
+        launches,
+        cursor: launches.length ? launches[launches.length - 1].cursor : null,
+        // if the cursor at the end of the paginated results is the same as the
+        // last item in _all_ results, then there are no more results after this
+        hasMore: launches.length
+          ? launches[launches.length - 1].cursor !==
+            allLaunches[allLaunches.length - 1].cursor
+          : false
+      };
+    },
+    launch: (_, { id }, { dataSources }) =>
+      dataSources.launchAPI.getLaunchById({ launchId: id }),
+     me: async (_, __, { dataSources }) =>
+      dataSources.userAPI.findOrCreateUser(),
+  }
+};
+```
+
+Let's test the cursor-based pagination we just implemented. Restart your server with `npm start` and run this query in GraphQL Playground:
+
+```graphql
+query GetLaunches {
+  launches(pageSize: 3) {
+    launches {
+      id
+      mission {
+        name
+      }
+    }
+  }
+}
+```
+
+Thanks to our pagination implementation, the server should only return three launches instead of the full list.
+
+<hr/>
+
+That takes care of the resolvers for our schema's queries! Next, let's write resolvers for its [mutations](./mutation-resolvers).
