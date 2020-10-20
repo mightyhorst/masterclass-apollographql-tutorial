@@ -1,0 +1,27 @@
+---
+title: "4. Write mutation resolvers"
+description: Learn how a GraphQL mutation modifies data
+---
+
+We've written all of the resolvers we need for schema fields that apply to query operations. Now, let's write resolvers for our schema's **mutations**. This process is nearly identical.
+
+## `login`
+
+First, let's write a resolver for `Mutation.login`, which enables a user to log in to our application. Add the following to your resolver map below the `Query` field:
+
+```js:title=src/resolvers.js
+// Query: {
+//   ...
+// },
+Mutation: {
+  login: async (_, { email }, { dataSources }) => {
+    const user = await dataSources.userAPI.findOrCreateUser({ email });
+    if (user) return Buffer.from(email).toString('base64');
+  }
+},
+```
+
+This resolver takes an `email` address and returns a login token for a corresponding user entity. If a user entity doesn't yet exist for this email address, one is created.
+
+In a later chapter, we'll learn how to save this login token on the client.
+
