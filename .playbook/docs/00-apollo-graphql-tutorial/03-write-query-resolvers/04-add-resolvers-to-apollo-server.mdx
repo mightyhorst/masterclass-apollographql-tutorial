@@ -1,0 +1,31 @@
+## Add resolvers to Apollo Server
+
+Now that we have some resolvers, let's add them to our server. Add the highlighted lines to `src/index.js`:
+
+```js:title=src/index.js
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
+const { createStore } = require('./utils');
+const resolvers = require('./resolvers'); // highlight-line
+
+const LaunchAPI = require('./datasources/launch');
+const UserAPI = require('./datasources/user');
+
+const store = createStore();
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers, // highlight-line
+  dataSources: () => ({
+    launchAPI: new LaunchAPI(),
+    userAPI: new UserAPI({ store })
+  })
+});
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
+```
+
+By providing your resolver map to Apollo Server like so, it knows how to call resolver functions as needed to fulfill incoming queries. 
+
