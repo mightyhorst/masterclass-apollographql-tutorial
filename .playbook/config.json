@@ -4,7 +4,7 @@
     "docs": ".playbook/docs",
     "cli": ".playbook/cli",
     "starterKit": "init commit",
-    "ignoreCommits": ["ignore:"],
+    "ignoreCommits": ["ignore:", "browser:"],
     "meta": {
         "categoryId": [
             {

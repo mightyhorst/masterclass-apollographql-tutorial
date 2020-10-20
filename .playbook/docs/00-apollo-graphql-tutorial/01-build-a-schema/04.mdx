@@ -1,0 +1,29 @@
+## Define your schema's types
+
+Your GraphQL schema defines what types of data a client can read and write to your data graph. Schemas are strongly typed, which unlocks powerful developer tooling.
+
+Your schema's structure should support the actions that your clients will take. Our example app needs to be able to:
+
+* Fetch a list of all upcoming rocket launches
+* Fetch a specific launch by its ID
+* Log in the user
+* Book a launch for a logged-in user
+* Cancel a previously booked launch for a logged-in user
+
+Let's design our schema to make these actions straightforward.
+
+In `src/schema.js`, import `gql` from `apollo-server` and create a variable called `typeDefs` for your schema:
+
+```js:title=src/schema.js
+const { gql } = require('apollo-server');
+
+const typeDefs = gql`
+  # Your schema will go here
+`;
+
+module.exports = typeDefs;
+```
+
+The schema will go inside the `gql` function (between the backticks). The language we'll use to write the schema is GraphQL's schema definition language (SDL).
+
+> Because the schema sits directly between your application clients and your underlying data services, front-end and back-end teams should collaborate on its structure. When you develop your own data graph, practice **schema-first development** and agree on a schema _before_ you begin implementing your API.

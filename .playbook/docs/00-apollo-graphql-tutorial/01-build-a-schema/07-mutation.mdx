@@ -1,0 +1,35 @@
+### The `Mutation` type
+
+Queries enable clients to fetch data, but not to _modify_ data. To enable clients to modify data, our schema needs to define some **mutations**.
+
+The `Mutation` type is a special type that's similar in structure to the `Query` type. Paste the following into your schema definition:
+
+```graphql:title=src/schema.js
+type Mutation {
+  bookTrips(launchIds: [ID]!): TripUpdateResponse!
+  cancelTrip(launchId: ID!): TripUpdateResponse!
+  login(email: String): String # login token
+}
+```
+
+This `Mutation` type defines three available mutations for clients to execute: `bookTrips`, `cancelTrip`, and `login`.
+
+* The `bookTrips` mutation enables a logged-in user to book a trip on one or more `Launch`es (specified by an array of launch IDs).
+* The `cancelTrip` mutation enables a logged-in user to cancel a trip that they previously booked.
+* The `login` mutation enables a user to log in by providing their email address.
+
+The `bookTrips` and `cancelTrip` mutations return the same object type: a `TripUpdateResponse`. A mutation's return type is entirely up to you, but we recommend defining special object types specifically for mutation responses.
+
+Add the definition for `TripUpdateResponse` to your schema:
+
+```graphql:title=src/schema.js
+type TripUpdateResponse {
+  success: Boolean!
+  message: String
+  launches: [Launch]
+}
+```
+
+This response type contains a `success` status, a corresponding `message`, and an array of any `Launch`es that were modified by the mutation. It's good practice for a mutation to return whatever objects it modifies so the requesting client can update its cache and UI without needing to make a followup query.
+
+Our example app's schema is now complete!

@@ -1,0 +1,16 @@
+## Run your server
+
+Return to `src/index.js` and add a call to `server.listen()`, like so:
+
+```js{6-8}:title=src/index.js
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
+
+const server = new ApolloServer({ typeDefs });
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
+```
+
+After saving, run `npm start` to start your server! 🎉 Apollo Server will now be available on port 4000.

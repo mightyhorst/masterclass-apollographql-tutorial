@@ -1,0 +1,22 @@
+---
+title: '1. Build a schema'
+description: Create the blueprint for your data graph
+---
+
+> Time to accomplish: 15 minutes
+
+Every data graph uses a **schema** to define the types of data it includes. For example, the schema for an online bookstore might define the following types:
+
+```graphql
+type Book {
+  title: String
+  author: Author
+}
+
+type Author {
+  name: String
+  books: [Book]
+}
+```
+
+In the steps below, we'll set up a GraphQL server that will enforce our schema's structure, and then we'll define the schema itself.
