@@ -1,0 +1,10 @@
+---
+title: '2. Connect to data sources'
+description: Fetch data from multiple locations
+---
+
+> Time to accomplish: 10 minutes
+
+Now that we've constructed our schema, we need to connect data sources to Apollo Server. **A data source is any database, service, or API that holds the data you use to populate your schema's fields.** Your GraphQL API can interact with any combination of data sources.
+
+Apollo provides a `DataSource` class that we can extend to handle interaction logic for a particular type of data source. In this section, we'll extend `DataSource` to connect both a REST API and a SQL database to Apollo Server. Don't worry, you don't need to be familiar with either of these technologies to follow along with the examples.
