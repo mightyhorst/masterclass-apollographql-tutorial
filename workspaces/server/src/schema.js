@@ -15,7 +15,20 @@ const typeDefs = gql`
     launch(id: ID!): Launch
     me: User
   }
-  
+
+  type Mutation {
+    # if false, signup failed -- check errors
+    bookTrips(launchIds: [ID]!): TripUpdateResponse!
+
+    # if false, cancellation failed -- check errors
+    cancelTrip(launchId: ID!): TripUpdateResponse!
+
+    login(email: String): User!
+
+    # for use with the iOS tutorial
+    uploadProfileImage(file: Upload!): User
+  }
+
   type Launch {
     id: ID!
     site: String
