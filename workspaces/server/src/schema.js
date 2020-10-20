@@ -35,6 +35,7 @@ const typeDefs = gql`
     launches: [Launch]
   }
 
+  # Launch Type 
   type Launch {
     id: ID!
     site: String
