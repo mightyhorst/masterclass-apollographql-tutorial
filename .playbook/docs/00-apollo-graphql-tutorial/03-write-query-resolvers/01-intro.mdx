@@ -1,0 +1,14 @@
+---
+title: "3. Write query resolvers"
+description: Learn how a GraphQL query fetches data
+---
+
+We've designed our schema and configured our data sources, but our server doesn't know how to _use_ its data sources to populate schema fields. To solve this, we'll define a collection of resolvers.
+
+**A resolver is a function that's responsible for populating the data for a single field in your schema.** Whenever a client queries for a particular field, the resolver for that field fetches the requested data from the appropriate data source.
+
+A resolver function returns one of the following:
+
+* Data of the type required by the resolver's corresponding schema field (string, integer, object, etc.)
+* A promise that fulfills with data of the required type
+
