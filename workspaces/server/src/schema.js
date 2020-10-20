@@ -13,7 +13,7 @@ const typeDefs = gql`
       👉 If you add a cursor here, it will only return results _after_ this cursor
       """
       after: String
-      
+
     ): LaunchConnection!
     launch(id: ID!): Launch
     me: User
@@ -32,19 +32,18 @@ const typeDefs = gql`
     uploadProfileImage(file: Upload!): User
   }
 
+  type LaunchConnection { 
+    cursor: String!
+    hasMore: Boolean!
+    launches: [Launch]!
+  }
+
   type TripUpdateResponse {
     success: Boolean!
     message: String
     launches: [Launch]
   }
 
-  type LaunchConnection {
-    cursor: String!
-    hasMore: Boolean!
-    launches: [Launch]!
-  }
-
-  # Launch Type 
   type Launch {
     id: ID!
     site: String
