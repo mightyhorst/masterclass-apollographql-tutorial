@@ -73,6 +73,12 @@
           "emoji": "🙈 ignore:",
           "code": ":see_no_evil: ignore:",
           "description": "Ignore this commit in playbook"
+        },
+        {
+          "name": "browser",
+          "emoji": "🙈 browser:",
+          "code": ":see_no_evil: browser:",
+          "description": "Add Browser redirection"
         }
       ],
       "skipQuestions": [
