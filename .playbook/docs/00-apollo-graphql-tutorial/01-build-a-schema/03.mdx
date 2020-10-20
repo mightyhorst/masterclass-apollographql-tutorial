@@ -1,0 +1,14 @@
+The two packages you need to get started with Apollo Server are `apollo-server` and `graphql`, both of which are installed with the above command.
+
+Now, let's navigate to `src/index.js` so we can create our server. Paste the code below into the file:
+
+```js:title=src/index.js
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
+
+const server = new ApolloServer({ typeDefs });
+```
+
+This code imports the `ApolloServer` class from `apollo-server`, along with our (currently undefined) schema from `src/schema.js`. It then creates a new instance of `ApolloServer` and passes it the imported schema via the `typeDefs` property.
+
+Now that Apollo Server is prepared to receive our schema, let's define it.
