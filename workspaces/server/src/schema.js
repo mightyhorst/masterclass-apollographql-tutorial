@@ -29,6 +29,12 @@ const typeDefs = gql`
     uploadProfileImage(file: Upload!): User
   }
 
+  type TripUpdateResponse {
+    success: Boolean!
+    message: String
+    launches: [Launch]
+  }
+
   type Launch {
     id: ID!
     site: String
