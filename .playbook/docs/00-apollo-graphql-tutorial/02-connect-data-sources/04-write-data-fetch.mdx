@@ -1,0 +1,7 @@
+
+The `RESTDataSource` class provides helper methods that correspond to HTTP verbs like `GET` and `POST`. In the code above:
+
+1. The call to `this.get('launches')` sends a `GET` request to `https://api.spacexdata.com/v2/launches` and stores the array of returned launches in `response`.
+2. We use `this.launchReducer` (which we'll write next) to transform each returned launch into the format expected by our schema. If there are no launches, an empty array is returned.
+
+Now we need to write the `launchReducer` method, which transforms returned launch data into the shape that our schema expects. This approach decouples the structure of your schema from the structure of the various data sources that populate its fields. 
