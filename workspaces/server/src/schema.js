@@ -35,6 +35,12 @@ const typeDefs = gql`
     launches: [Launch]
   }
 
+  type LaunchConnection {
+    cursor: String!
+    hasMore: Boolean!
+    launches: [Launch]!
+  }
+
   # Launch Type 
   type Launch {
     id: ID!
