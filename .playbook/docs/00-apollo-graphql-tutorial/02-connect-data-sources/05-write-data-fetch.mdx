@@ -1,0 +1,36 @@
+First, let's recall what a `Launch` object type looks like in our schema:
+
+```graphql
+# YOU DON'T NEED TO COPY THIS CODE.
+type Launch {
+  id: ID!
+  site: String
+  mission: Mission
+  rocket: Rocket
+  isBooked: Boolean!
+}
+```
+
+Now, let's write a `launchReducer` method that transforms launch data from the REST API into the shape above. Copy the following code into your `LaunchAPI` class:
+
+```js:title=src/datasources/launch.js
+launchReducer(launch) {
+  return {
+    id: launch.flight_number || 0,
+    cursor: `${launch.launch_date_unix}`,
+    site: launch.launch_site && launch.launch_site.site_name,
+    mission: {
+      name: launch.mission_name,
+      missionPatchSmall: launch.links.mission_patch_small,
+      missionPatchLarge: launch.links.mission_patch,
+    },
+    rocket: {
+      id: launch.rocket.rocket_id,
+      name: launch.rocket.rocket_name,
+      type: launch.rocket.rocket_type,
+    },
+  };
+}
+```
+
+Using a reducer like this enables the `getAllLaunches` method to remain concise as our definition of a `Launch` potentially changes and grows over time. It also helps with testing the `LaunchAPI` class, which we'll cover later.

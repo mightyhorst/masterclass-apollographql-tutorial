@@ -1,0 +1,23 @@
+## Connect a database
+
+The SpaceX API is a read-only data source for fetching launch data. We also need a _writable_ data source that allows us to store application data, such as user identities and seat reservations. To accomplish this, we'll connect to a SQLite database and use Sequelize for our ORM. Our `package.json` file includes these dependencies, so they were installed with our `npm install` call in [Build a schema](./schema/). 
+
+Because this section contains SQL-specific code that isn't necessary for understanding Apollo data sources, a `UserAPI` data source is included in [`src/datasources/user.js`](https://github.com/apollographql/fullstack-tutorial/blob/master/start/server/src/datasources/user.js). Navigate to that file so we can cover the high-level concepts.
+
+### Building a custom data source
+
+Apollo doesn't provide a canonical `DataSource` subclass for SQL databases at this time (although we'd love to help guide you if you're interested in contributing). So, we've created a custom data source for our SQLite database by extending the generic `DataSource` class.
+
+The following core concepts of a `DataSource` subclass are demonstrated in `src/datasources/user.js`:
+
+- **The `initialize` method**: Implement this method if you want to pass any configuration options to your subclass. The `UserAPI` class uses `initialize` to access our API's `context`.
+- **`this.context`**: A graph API's context is an object that's shared across every **resolver** in a GraphQL request. We'll cover resolvers in detail in the next section. Right now, all you need to know is that the context is useful for storing and sharing user information.
+- **Caching**: Although the `RESTDataSource` class provides a built-in cache, the generic `DataSource` class does _not_. You can use [cache primitives](https://www.apollographql.com/docs/apollo-server/features/data-sources/#using-memcached-redis-as-a-cache-storage-backend) to build your own caching functionality.
+
+Let's go over some of the methods in `src/datasources/user.js` that we use to fetch and update data in our database. You'll want to refer to these in the next section:
+
+- `findOrCreateUser({ email })`: Finds or creates a user with a given `email` in the database.
+- `bookTrips({ launchIds })`: Takes an object with an array of `launchIds` and books them for the logged-in user.
+- `cancelTrip({ launchId })`: Takes an object with a `launchId` and cancels that launch for the logged-in user.
+- `getLaunchIdsByUser()`: Returns all booked trips for the logged-in user.
+- `isBookedOnLaunch({ launchId })`: Determines whether the logged-in user has booked a trip on a particular launch.

@@ -1,0 +1,36 @@
+## Add data sources to Apollo Server
+
+Now that we've built our two data sources, we need to add them to Apollo Server.
+
+Pass a `dataSources` option to the `ApolloServer` constructor. This option is a function that returns an object containing newly instantiated data sources. 
+
+Navigate to `src/index.js` and add the code highlighted below:
+
+```js{3,5,6,8,12-15}:title=src/index.js
+const { ApolloServer } = require('apollo-server');
+const typeDefs = require('./schema');
+const { createStore } = require('./utils');
+
+const LaunchAPI = require('./datasources/launch');
+const UserAPI = require('./datasources/user');
+
+const store = createStore();
+
+const server = new ApolloServer({
+  typeDefs,
+  dataSources: () => ({
+    launchAPI: new LaunchAPI(),
+    userAPI: new UserAPI({ store })
+  })
+});
+
+server.listen().then(({ url }) => {
+  console.log(`🚀 Server ready at ${url}`);
+});
+```
+
+First, we import and call the `createStore` function to set up our SQLite database. Then, we add the `dataSources` function to the `ApolloServer` constructor to connect instances of `LaunchAPI` and `UserAPI` to our graph. We also make sure to pass the database to the `UserAPI` constructor.
+
+If you use `this.context` in a datasource, it's critical to create a _new_ instance in the `dataSources` function, rather than sharing a single instance. Otherwise, `initialize` might be called during the execution of asynchronous code for a particular user, replacing `this.context` with the context of _another_ user.
+
+Now that we've hooked up our data sources to Apollo Server, it's time to move on to the next section and learn how to interact with our data sources from within our resolvers.

@@ -1,0 +1,17 @@
+### Write data-fetching methods
+
+Our `LaunchAPI` data source needs methods that enable it to fetch the data that incoming queries will request. 
+
+#### The `getAllLaunches` method
+
+According to our schema, we'll need a method to get a list of all SpaceX launches. Let's add a `getAllLaunches` method to our `LaunchAPI` class:
+
+```js:title=src/datasources/launch.js
+async getAllLaunches() {
+  const response = await this.get('launches');
+  return Array.isArray(response)
+    ? response.map(launch => this.launchReducer(launch))
+    : [];
+}
+```
+

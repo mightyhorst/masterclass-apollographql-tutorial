@@ -2,15 +2,18 @@ const { gql } = require('apollo-server');
 
 const typeDefs = gql`
   type Query {
-    launches(
+    launches( 
+      
       """
-      The number of results to show. Must be >= 1. Default = 20
+      👋 The number of results to show. Must be >= 1. Default = 20
       """
       pageSize: Int
+
       """
-      If you add a cursor here, it will only return results _after_ this cursor
+      👉 If you add a cursor here, it will only return results _after_ this cursor
       """
       after: String
+
     ): LaunchConnection!
     launch(id: ID!): Launch
     me: User
@@ -27,6 +30,12 @@ const typeDefs = gql`
 
     # for use with the iOS tutorial
     uploadProfileImage(file: Upload!): User
+  }
+
+  type LaunchConnection { 
+    cursor: String!
+    hasMore: Boolean!
+    launches: [Launch]!
   }
 
   type TripUpdateResponse {
@@ -54,7 +63,7 @@ const typeDefs = gql`
     trips: [Launch]!
   }
   
-  type Mission {
+  type Mission { // highlight
     name: String
     missionPatch(size: PatchSize): String
   }
