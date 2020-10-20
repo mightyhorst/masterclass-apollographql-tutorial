@@ -1,0 +1,17 @@
+### Explore your schema
+
+With your server running, visit `localhost:4000` in your browser to open [GraphQL Playground](https://www.apollographql.com/docs/apollo-server/features/graphql-playground/), an IDE that enables you to **introspect** your schema and test out queries. Introspection is a helpful feature of a GraphQL server that enables you to obtain its schema.
+
+> Note that introspection should be **disabled** for a production GraphQL server. Apollo Server disables introspection automatically if the `NODE_ENV` environment variable is set to `production`.
+
+To introspect your server's schema, click the **Schema** button on the right side of GraphQL Playground:
+
+<img src="https://www.apollographql.com/docs/0774a4e5a5b324097895abb779c540ab/schematab.png" alt="Schema button">
+
+Your schema's queries, mutations, and object type definitions appear:
+
+<img src="https://www.apollographql.com/docs/b893f681b5b3bbcaf3ad9355bad8def6/moredetailsonatype.png" alt="More details on a Schema Type">
+
+
+
+Our server now knows which GraphQL types and operations it supports, but it doesn't know where to obtain the data to respond to those operations. Next, we'll connect our server to two data sources.
