@@ -1,0 +1,51 @@
+### Object types
+
+Most of the definitions in a GraphQL schema are **object types**. Each object type you define should represent an object that an application client might need to interact with.
+
+For example, our example app needs to be able to fetch a list of upcoming rocket launches, so we should define a `Launch` type to support that behavior.
+
+Paste the following inside the backticks of the `typeDefs` declaration in `src/schema.js`:
+
+```graphql:title=src/schema.js
+type Launch {
+  id: ID!
+  site: String
+  mission: Mission
+  rocket: Rocket
+  isBooked: Boolean!
+}
+```
+
+The `Launch` object type has a collection of **fields**, and each field has a type of its own. A field's type can be either an object type or a **scalar type**. A scalar type is a primitive (like `ID`, `String`, `Boolean`, or `Int`) that resolves to a single value. In addition to GraphQL's built-in scalar types, you can define [custom scalar types](https://www.apollographql.com/docs/apollo-server/schema/scalars-enums/).
+
+> An exclamation point (`!`) after a declared field's type means "this field's value can never be null."
+
+In the `Launch` definition above, `Mission` and `Rocket` refer to _other_ object types. Let's add definitions for those, along with the `User` type (again, all inside the backticks):
+
+```graphql:title=src/schema.js
+type Rocket {
+  id: ID!
+  name: String
+  type: String
+}
+
+type User {
+  id: ID!
+  email: String!
+  trips: [Launch]!
+}
+
+type Mission {
+  name: String
+  missionPatch(size: PatchSize): String
+}
+
+enum PatchSize {
+  SMALL
+  LARGE
+}
+```
+
+> If a declared field's type is in `[Square Brackets]`, it's an **array** of the specified type. If an array has an exclamation point after it, the array cannot be null, but it _can_ be empty.
+
+Notice above that the `missionPatch` field of the `Mission` type takes an **argument** named `size`, which is of the **enum type** `PatchSize`. When you query for a field that takes an argument, the field's value can vary depending on the provided argument's value. In this case, the value you provide for `size` will determine which size of the mission's associated patch is returned (the `SMALL` size or the `LARGE` size).
