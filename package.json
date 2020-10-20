@@ -1,0 +1,77 @@
+{
+  "name": "@masterclass-apollo/root",
+  "version": "0.0.1",
+  "description": "MasterClass Apollo GraphQL Tutorial",
+  "main": "index.js",
+  "repository": "https://github.com/mitni455/masterclass-apollographql-tutorial.git",
+  "author": "Nick Mitchell <nick@kitset.io>",
+  "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "workspaces/*"
+  ],
+  "devDependencies": {
+    "cz-emoji": "^1.2.2",
+    "lerna": "^3.22.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-emoji"
+    },
+    "cz-emoji": {
+      "types": [
+        {
+          "name": "feature",
+          "emoji": "🚀 feat:",
+          "code": ":rocket: feat:",
+          "description": "A new hope/feature"
+        },
+        {
+          "name": "code",
+          "emoji": "🚀 code:",
+          "code": ":rocket: code:",
+          "description": "A new code block"
+        },
+        {
+          "name": "fix",
+          "emoji": "🐛 fix:",
+          "code": ":bug: fix:",
+          "description": "Fix something"
+        },
+        {
+          "name": "chore",
+          "emoji": "🧽 chore:",
+          "code": ":pencil: chore:",
+          "description": "A new hope/feature"
+        },
+        {
+          "name": "test",
+          "emoji": "✅ test:",
+          "code": ":white_check_mark: test:",
+          "description": "Update tests"
+        },
+        {
+          "name": "cicd",
+          "emoji": "📦 cicd:",
+          "code": ":package: cicd:",
+          "description": "Update cicd, env or scripts"
+        },
+        {
+          "name": "cli",
+          "emoji": "📦 cli:",
+          "code": ":package: cli:",
+          "description": "Cli to run"
+        },
+        {
+          "name": "docs",
+          "emoji": "💬 docs:",
+          "code": ":speech_balloon: docs:",
+          "description": "Update docs"
+        }
+      ],
+      "skipQuestions": [
+        "scope"
+      ]
+    }
+  }
+}
