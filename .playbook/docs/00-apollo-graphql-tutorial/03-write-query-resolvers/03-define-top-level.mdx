@@ -1,0 +1,34 @@
+## Define top-level resolvers
+
+As mentioned above, the resolver for a parent field always executes before the resolvers for that field's children. Therefore, let's start by defining resolvers for some top-level fields: the fields of the `Query` type.
+
+As `src/schema.js` shows, our schema's `Query` type defines three fields: `launches`, `launch`, and `me`. To define resolvers for these fields, open `src/resolvers.js` and paste the code below:
+
+```js:title=src/resolvers.js
+module.exports = {
+  Query: {
+    launches: (_, __, { dataSources }) =>
+      dataSources.launchAPI.getAllLaunches(),
+    launch: (_, { id }, { dataSources }) =>
+      dataSources.launchAPI.getLaunchById({ launchId: id }),
+    me: (_, __, { dataSources }) => dataSources.userAPI.findOrCreateUser()
+  }
+};
+```
+
+As this code shows, we define our resolvers in a **map**, where the map's keys correspond to our schema's types (`Query`) and fields (`launches`, `launch`, `me`).
+
+Regarding the function arguments above:
+
+* All three resolver functions assign their first [positional argument](#the-resolver-function-signature) (`parent`) to the variable `_` as a convention to indicate that they don't use its value.
+
+* The `launches` and `me` functions assign their _second_ positional argument (`args`) to `__` for the same reason. 
+
+    * (The `launch` function _does_ use the `args` argument, however, because our schema's `launch` field takes an `id` argument.)
+
+* All three resolver functions _do_ use the third positional argument (`context`). Specifically, they destructure it to access the [`dataSources` we defined](./data-source).
+
+* None of the resolver functions includes the fourth positional argument (`info`), because they don't use it and there's no other need to include it.
+
+As you can see, these resolver functions are short! That's possible because most of the logic they rely on is part of the `LaunchAPI` and `UserAPI` data sources. By keeping resolvers thin as a best practice, you can safely refactor your backing logic while reducing the likelihood of breaking your API.
+
