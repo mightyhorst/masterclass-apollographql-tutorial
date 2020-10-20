@@ -61,7 +61,7 @@ const typeDefs = gql`
     trips: [Launch]!
   }
   
-  type Mission {
+  type Mission { // highlight
     name: String
     missionPatch(size: PatchSize): String
   }
