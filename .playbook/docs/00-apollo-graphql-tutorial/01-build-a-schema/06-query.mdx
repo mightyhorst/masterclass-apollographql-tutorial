@@ -1,0 +1,19 @@
+### The `Query` type
+
+We've defined the objects that exist in our data graph, but clients don't yet have a way to _fetch_ those objects. To resolve that, our schema needs to define  **queries** that clients can execute against the data graph.
+
+You define your data graph's supported queries as fields of a special type called the `Query` type. Paste the following into your schema definition:
+
+```graphql:title=src/schema.js
+type Query {
+  launches: [Launch]!
+  launch(id: ID!): Launch
+  me: User
+}
+```
+
+This `Query` type defines three available queries for clients to execute: `launches`, `launch`, and `me`.
+
+* The `launches` query will return an array of all upcoming `Launch`es.
+* The `launch` query will return a single `Launch` that corresponds to the `id` argument provided to the query.
+* The `me` query will return details for the `User` that's currently logged in.
