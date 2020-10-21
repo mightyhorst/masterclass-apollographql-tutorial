@@ -1,0 +1,18 @@
+### Obtain a login token
+
+GraphQL mutations are structured exactly like queries, except they use the `mutation` keyword. Paste the mutation below and run it in GraphQL Playground:
+
+```graphql
+mutation LoginUser {
+  login(email: "daisy@apollographql.com")
+}
+```
+
+The server should respond with a string that looks like this: 
+
+```
+ZGFpc3lAYXBvbGxvZ3JhcGhxbC5jb20=
+```
+
+This is your login token (which is just the Base64 encoding of the email address you provided). Copy it to use in the next mutation.
+
