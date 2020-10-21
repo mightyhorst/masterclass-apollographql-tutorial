@@ -1,0 +1,103 @@
+### Build a paginated list
+
+Apollo Client has built-in helpers to make adding pagination to our app much easier than it would be if we were writing the logic ourselves.
+
+To build a paginated list with Apollo, we first need to destructure the `fetchMore` function from the `useQuery` result object:
+
+
+
+```tsx:title=src/pages/launches.tsx
+const Launches: React.FC<LaunchesProps> = () => {
+  const {
+    data,
+    loading,
+    error,
+    fetchMore // highlight-line
+  } = useQuery<
+    GetLaunchListTypes.GetLaunchList,
+    GetLaunchListTypes.GetLaunchListVariables
+  >(GET_LAUNCHES);
+  // same as above
+}
+```
+
+
+
+Now that we have `fetchMore`, let's connect it to a Load More button to fetch more items when it's clicked. To do this, we will need to specify an `updateQuery` function on the return object from `fetchMore` that tells the Apollo cache how to update our query with the new items we're fetching.
+
+Copy the code below and add it before the closing `</Fragment>` tag in the `Launches` component we added in the previous step.
+
+<!-- TODO: make this more brief after a fix lands -->
+
+
+
+```tsx:title=src/pages/launches.tsx
+{data.launches &&
+  data.launches.hasMore && (
+    <Button
+      onClick={() =>
+        fetchMore({ // highlight-line
+          variables: {
+            after: data.launches.cursor,
+          },
+          updateQuery: (prev, { fetchMoreResult, ...rest }) => { // highlight-line
+            if (!fetchMoreResult) return prev;
+            return {
+              ...fetchMoreResult,
+              launches: {
+                ...fetchMoreResult.launches,
+                launches: [
+                  ...prev.launches.launches,
+                  ...fetchMoreResult.launches.launches,
+                ],
+              },
+            };
+          },
+        })
+      }
+    >
+      Load More
+    </Button>
+  )
+}
+```
+
+```jsx:title=src/pages/launches.jsx
+{data.launches &&
+  data.launches.hasMore && (
+    <Button
+      onClick={() =>
+        fetchMore({ // highlight-line
+          variables: {
+            after: data.launches.cursor,
+          },
+          updateQuery: (prev, { fetchMoreResult, ...rest }) => { // highlight-line
+            if (!fetchMoreResult) return prev;
+            return {
+              ...fetchMoreResult,
+              launches: {
+                ...fetchMoreResult.launches,
+                launches: [
+                  ...prev.launches.launches,
+                  ...fetchMoreResult.launches.launches,
+                ],
+              },
+            };
+          },
+        })
+      }
+    >
+      Load More
+    </Button>
+  )
+}
+```
+
+
+
+First, we check to see if we have more launches available in our query. If we do, we render a button with a click handler that calls the `fetchMore` function from Apollo. The `fetchMore` function receives new variables for the list of launches query, which is represented by our cursor.
+
+We also define the `updateQuery` function to tell Apollo how to update the list of launches in the cache. To do this, we take the previous query result and combine it with the new query result from `fetchMore`.
+
+In the next step, we'll learn how to wire up the launch detail page to display a single launch when an item in the list is clicked.
+
