@@ -1,0 +1,46 @@
+## Make your first query
+
+Before we integrate Apollo Client with a React view layer, let's try sending a query with vanilla JavaScript.
+
+1. Add the following to the bottom of `index.tsx`:
+
+    
+
+    ```tsx:title=src/index.tsx
+    // ...ApolloClient instantiated here...
+
+    client
+      .query({
+        query: gql`
+          query TestQuery {
+            launch(id: 56) {
+              id
+              mission {
+                name
+              }
+            }
+          }
+        `
+      })
+      .then(result => console.log(result));
+    ```
+
+    
+
+2. Make sure your GraphQL server is running. 
+
+    ```
+    cd workspaces/client 
+    yarn install
+    yarn start
+    ```
+
+3. From `workspaces/client`, run `yarn start` to build and run your client app. When the build finishes, your browser opens to `http://localhost:3000/` automatically. 
+
+4. When the index page opens, open up the console in your browser's developer tools. You'll see a logged `Object` that contains your server's response to your query. The data you requested is contained in the object's `data` field, and the other fields provide metadata about the state of the request.
+
+    You can also open the Network tab in your browser's developer tools and refresh the page to view the shape of the request that Apollo Client makes to execute your query (it's a POST request to `localhost:4000`).
+
+5. Go ahead and delete the `client.query()` call you just added, along with import of `gql` that's no longer needed.
+
+Now, let's integrate our client with React.
