@@ -1,0 +1,25 @@
+Let's create our instance of `ApolloClient` by pasting the following into `src/index.tsx`:
+
+```tsx:title=src/index.tsx
+import {
+  ApolloClient,
+  InMemoryCache,
+  gql,
+  NormalizedCacheObject
+} from '@apollo/client';
+
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  uri: 'http://localhost:4000/',
+  cache: new InMemoryCache()
+});
+```
+
+
+The `ApolloClient` constructor requires two parameters:
+
+* The `uri` of our GraphQL server (in this case `localhost:4000`)
+* An instance of `InMemoryCache` to use as the client's `cache`
+
+In just these few lines of code, our client is ready to fetch data!
+
+> To generate TypeScript types for your queries and mutations, open another terminal window and run `npm run codegen`. This command watches for changes to your code and generates client-side typings.
