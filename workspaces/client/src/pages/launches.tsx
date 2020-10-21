@@ -48,7 +48,8 @@ const Launches: React.FC<LaunchesProps> = () => {
   const {
     data,
     loading,
-    error
+    error,
+    fetchMore
   } = useQuery<
     GetLaunchListTypes.GetLaunchList,
     GetLaunchListTypes.GetLaunchListVariables
