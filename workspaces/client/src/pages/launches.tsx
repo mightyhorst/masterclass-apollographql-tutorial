@@ -1,6 +1,9 @@
-import React, { Fragment }  from 'react';
+import React, { Fragment } from 'react';
+import { gql, useQuery } from '@apollo/client';
+
+import { LaunchTile, Header, Button, Loading } from '../components';
 import { RouteComponentProps } from '@reach/router';
-import { gql } from '@apollo/client'
+import * as GetLaunchListTypes from './__generated__/GetLaunchList';
 
 export const LAUNCH_TILE_DATA = gql`
   fragment LaunchTile on Launch {
@@ -14,6 +17,27 @@ export const LAUNCH_TILE_DATA = gql`
     mission {
       name
       missionPatch
+    }
+  }
+`;
+
+const GET_LAUNCHES = gql`
+  query launchList($after: String) {
+    launches(after: $after) {
+      cursor
+      hasMore
+      launches {
+        id
+        isBooked
+        rocket {
+          id
+          name
+        }
+        mission {
+          name
+          missionPatch
+        }
+      }
     }
   }
 `;
