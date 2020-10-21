@@ -1,0 +1,46 @@
+### Install the Apollo extension for VSCode (optional)
+
+Apollo provides an extension for Visual Studio Code that includes loads of helpful features, such as syntax highlighting, GraphQL field suggestions via IntelliSense, and in-line performance estimates.
+
+1. Most of the VSCode extension's features are powered by Apollo Studio. To get the most out of the extension, make sure to first complete [Connect to Apollo Studio](./production/).
+
+2. Like Apollo Server, the VSCode extension uses an [API key](https://www.apollographql.com/docs/studio/api-keys/) to communicate with Studio. You provide this API key by setting the value of the `APOLLO_KEY` environment variable.
+
+Create a `.env` file in `start/client` by making a copy of `start/client/.env.example`. Then paste your API key into it like so:
+
+<form class="playbook-vars">
+    <div class="row">
+        <label for="PASTE_YOUR_APOLLO_KEY">PASTE_YOUR_APOLLO_KEY</label>
+        <input id="PASTE_YOUR_APOLLO_KEY" />
+    </div>
+</form>
+
+```none:title=.env
+APOLLO_KEY={{PASTE_YOUR_APOLLO_KEY}}
+```    
+
+Our key is now stored under the environment variable `APOLLO_KEY`. Apollo VSCode uses this API key to fetch your server's schema from the Apollo schema registry.
+
+3. Also in `start/client`, open the empty file called `apollo.config.js`. You use this file to configure the behavior of both the Apollo VSCode extension and the Apollo CLI. 
+
+    Paste the snippet below into the file:
+
+<form class="playbook-vars">
+    <div class="row">
+        <label for="PASTE_YOUR_GRAPH_NAME_HERE">PASTE_YOUR_GRAPH_NAME_HERE</label>
+        <input id="PASTE_YOUR_GRAPH_NAME_HERE" />
+    </div>
+</form>
+
+```js:title=apollo.config.js
+module.exports = {
+    client: {
+        name: 'Space Explorer [web]',
+        service: '{{PASTE_YOUR_GRAPH_NAME_HERE}}',
+    },
+};
+```
+
+Replace `{{PASTE_YOUR_GRAPH_NAME_HERE}}` with the unique name of the graph you created in Studio in the previous chapter.
+
+That takes care of the VSCode extension! Now, let's dive into building our first client.
