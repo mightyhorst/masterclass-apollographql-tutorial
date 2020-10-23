@@ -1,0 +1,65 @@
+### Customizing the fetch policy
+
+Sometimes, it's useful to tell Apollo Client to bypass the cache altogether if you have some data that constantly needs to be refreshed. We can do this by customizing the `useQuery` hook's `fetchPolicy`.
+
+First, let's navigate to `src/pages/profile.tsx` and write our query:
+
+
+```tsx:title=src/pages/profile.tsx
+import React, { Fragment } from 'react'; // preserve-line
+import { gql, useQuery } from '@apollo/client'; // preserve-line
+
+import { Loading, Header, LaunchTile } from '../components'; // preserve-line
+import { LAUNCH_TILE_DATA } from './launches'; // preserve-line
+import { RouteComponentProps } from '@reach/router';
+import * as GetMyTripsTypes from './__generated__/GetMyTrips';
+
+export const GET_MY_TRIPS = gql`
+  query GetMyTrips {
+    me {
+      id
+      email
+      trips {
+        ...LaunchTile
+      }
+    }
+  }
+  ${LAUNCH_TILE_DATA}
+`;
+```
+
+
+Next, let's render a component with `useQuery` to fetch a logged in user's list of trips. By default, Apollo Client's fetch policy is `cache-first`, which means it checks the cache to see if the result is there before making a network request. Since we want this list to always reflect the newest data from our graph API, we set the `fetchPolicy` for this query to `network-only`:
+
+```tsx:title=src/pages/profile.tsx
+interface ProfileProps extends RouteComponentProps {}
+
+const Profile: React.FC<ProfileProps> = () => {
+  const { data, loading, error } = useQuery<GetMyTripsTypes.GetMyTrips, any>(
+    GET_MY_TRIPS,
+    { fetchPolicy: "network-only" } // highlight-line
+  );
+  if (loading) return <Loading />;
+  if (error) return <p>ERROR: {error.message}</p>;
+  if (data === undefined) return <p>ERROR</p>;
+
+  return (
+    <Fragment>
+      <Header>My Trips</Header>
+      {data.me && data.me.trips.length ? (
+        data.me.trips.map((launch: any) => (
+          <LaunchTile key={launch.id} launch={launch} />
+        ))
+      ) : (
+        <p>You haven't booked any trips</p>
+      )}
+    </Fragment>
+  );
+}
+
+export default Profile;
+```
+
+If you try to render this query, you'll notice that it returns null. This is because we need to implement our login feature first. We're going to tackle login in the next section.
+
+Now that we've learned how to leverage `useQuery` to build components that can fetch a paginated list, share fragments, and customize the fetch policy, it's time to progress to the next section so we can learn how to update data with mutations!
