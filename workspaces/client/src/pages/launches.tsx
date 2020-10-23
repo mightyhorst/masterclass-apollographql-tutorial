@@ -7,7 +7,6 @@ import * as GetLaunchListTypes from './__generated__/GetLaunchList';
 
 export const LAUNCH_TILE_DATA = gql`
   fragment LaunchTile on Launch {
-    __typename
     id
     isBooked
     rocket {
