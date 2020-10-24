@@ -1,0 +1,26 @@
+---
+title: 'Update data with mutations'
+sidebar_title: '8. Update data with mutations'
+description: Learn how to update data with the useMutation hook
+---
+
+Now that we've added multiple queries to our React app, let's add a **mutation**. The process is similar, with a few important differences.
+
+As a reminder, mutations are GraphQL operations that can modify back-end data (unlike queries). Our server's schema supports the following mutations:
+
+```graphql
+# YOU DON'T NEED TO COPY THIS.
+type Mutation {
+  bookTrips(launchIds: [ID]!): TripUpdateResponse!
+  cancelTrip(launchId: ID!): TripUpdateResponse!
+  login(email: String): String # login token
+}
+```
+
+We'll start by implementing the ability to log in. Notice that this mutation accepts a single variable, `email`. 
+
+
+## Support user login
+
+> **Note:** For simplicity, our example application doesn't implement actual user accounts with password-based authentication. Instead, a user unsecurely "logs in" by submitting their email address and receiving a corresponding session token from the server.
+
