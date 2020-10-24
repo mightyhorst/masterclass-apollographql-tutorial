@@ -1,0 +1,31 @@
+### Apply the `useMutation` hook
+
+We'll use Apollo Client's `useMutation` [React Hook](https://reactjs.org/docs/hooks-intro.html) to execute our `LOGIN_USER` mutation. As with `useQuery`, the hook's result provides properties that help us populate and render our component throughout the mutation's execution.
+
+_Unlike_ `useQuery`, `useMutation` doesn't execute its operation as soon as its component renders. Instead, the hook returns a **mutate function** that we call to execute the mutation whenever we want (such as when the user submits a form).
+
+Add the following to the bottom of `login.tsx`:
+
+
+
+```tsx:title=src/pages/login.tsx
+export default function Login() {
+const [login, { loading, error }] = useMutation<
+  LoginTypes.Login,
+  LoginTypes.LoginVariables
+>(LOGIN_USER);
+
+  if (loading) return <Loading />;
+  if (error) return <p>An error occurred</p>;
+
+  return <LoginForm login={login} />;
+}
+```
+
+
+
+* The first object in `useMutation`'s result tuple (`login`) is the mutate function we call to execute the mutation. We pass this function to our `LoginForm` component.
+* The second object in the tuple is similar to the result object returned by `useQuery`, including fields for the operation's `loading` and `error` states and the operation's result `data`.
+
+Now whenever a user submits the login form, our `login` mutation is called. The user's `token` is stored in the in-memory cache, _however_ we want that token to be available across multiple visits in the same browser. Let's tackle that next.
+

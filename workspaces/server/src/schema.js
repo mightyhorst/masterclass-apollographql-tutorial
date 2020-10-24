@@ -19,6 +19,7 @@ const typeDefs = gql`
     me: User
   }
 
+  # 👉 8. Update data with mutations
   type Mutation {
     # if false, signup failed -- check errors
     bookTrips(launchIds: [ID]!): TripUpdateResponse!
