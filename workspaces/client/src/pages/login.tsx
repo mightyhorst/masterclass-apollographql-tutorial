@@ -1,7 +1,7 @@
-import React from 'react'; 
-import { gql, useMutation } from '@apollo/client'; 
+import React from 'react';
+import { gql, useMutation } from '@apollo/client';
 
-import { LoginForm, Loading } from '../components'; 
+import { LoginForm, Loading } from '../components';
 import * as LoginTypes from './__generated__/login';
 
 export const LOGIN_USER = gql`
@@ -14,5 +14,13 @@ export const LOGIN_USER = gql`
 `;
 
 export default function Login() {
-  return <div />;
+  const [login, { loading, error }] = useMutation<
+    LoginTypes.login,
+    LoginTypes.loginVariables
+  >(LOGIN_USER);
+
+  if (loading) return <Loading />;
+  if (error) return <p>An error occurred</p>;
+
+  return <LoginForm login={login} />;
 }
