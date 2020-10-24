@@ -15,10 +15,10 @@ const [login, { loading, error }] = useMutation<
   LoginTypes.LoginVariables
 >(LOGIN_USER);
 
-if (loading) return <Loading />;
-if (error) return <p>An error occurred</p>;
+  if (loading) return <Loading />;
+  if (error) return <p>An error occurred</p>;
 
-return <LoginForm login={login} />;
+  return <LoginForm login={login} />;
 }
 ```
 
