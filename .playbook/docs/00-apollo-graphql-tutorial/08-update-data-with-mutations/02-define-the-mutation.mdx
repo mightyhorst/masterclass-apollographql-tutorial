@@ -1,0 +1,27 @@
+### Define the mutation
+
+ To start, navigate to `src/pages/login.tsx` and replace its contents with the following:
+
+
+
+```tsx:title=src/pages/login.tsx
+import React from 'react'; 
+import { gql, useMutation } from '@apollo/client'; 
+
+import { LoginForm, Loading } from '../components'; 
+import * as LoginTypes from './__generated__/login';
+
+export const LOGIN_USER = gql`
+  mutation login($email: String!) {
+    login(email: $email) {
+      id
+      token
+    }
+  }
+`;
+```
+
+
+
+Our `LOGIN_USER` definition looks just like our queries from the previous section, except it replaces the word `query` with `mutation`. We receive a server-generated `token` in the response from `login`, which represents the user's active session.
+
