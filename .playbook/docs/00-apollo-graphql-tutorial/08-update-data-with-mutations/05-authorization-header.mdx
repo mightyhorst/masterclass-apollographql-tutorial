@@ -1,0 +1,25 @@
+### Add `Authorization` headers to all requests
+
+Our client should provide the user's token with each GraphQL operation it sends to our server. This enables the server to verify that the user has permission to do what they're trying to do.
+
+In `index.tsx`, let's modify the constructor of `ApolloClient` to define a default set of `headers` that are applied to every GraphQL request: 
+
+
+
+```tsx{4-6}:title=src/index.tsx
+const client: ApolloClient<NormalizedCacheObject> = new ApolloClient({
+  cache,
+  uri: 'http://localhost:4000/graphql',
+  headers: {
+    authorization: localStorage.getItem('token') || '',
+  }
+});
+```
+
+
+
+Our server can ignore the token when resolving operations that don't require it (such as fetching the list of launches), so it's fine for our client to include the token in every request.
+
+### Enable the login form
+
+We're finished defining our `login` mutation, but we don't yet display the form that enables a user to execute it. Because we're storing the user token locally, we'll use Apollo Client's local state APIs to power some of the form's logic in the next section.
