@@ -17,7 +17,15 @@ export default function Login() {
   const [login, { loading, error }] = useMutation<
     LoginTypes.login,
     LoginTypes.loginVariables
-  >(LOGIN_USER);
+  >(
+    LOGIN_USER,
+    {
+      onCompleted({ login }) {
+        localStorage.setItem('token', login.token as string);
+        localStorage.setItem('userId', login.id as string);
+      }
+    }
+  );
 
   if (loading) return <Loading />;
   if (error) return <p>An error occurred</p>;
