@@ -20,7 +20,7 @@ export default function Login() {
   >(
     LOGIN_USER,
     {
-      onCompleted({ login }) {
+      onCompleted({ login }) { 
         localStorage.setItem('token', login.token as string);
         localStorage.setItem('userId', login.id as string);
       }
