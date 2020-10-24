@@ -1,26 +1,45 @@
-import React, { Fragment } from 'react'; 
-import { gql, useQuery } from '@apollo/client'; 
+## Fetching a single launch
 
-import { Loading, Header, LaunchDetail } from '../components'; 
-import { ActionButton } from '../containers'; 
+Let's navigate to `src/pages/launch.tsx` to build out our detail page. First, we should import some components and define our GraphQL query to get the launch details.
+
+
+
+```tsx:title=src/pages/launch.tsx
+import React, { Fragment } from 'react'; // preserve-line
+import { gql, useQuery } from '@apollo/client'; // preserve-line
+
+import { Loading, Header, LaunchDetail } from '../components'; // preserve-line
+import { ActionButton } from '../containers'; // preserve-line
 import { RouteComponentProps } from '@reach/router';
 import * as LaunchDetailsTypes from './__generated__/LaunchDetails';
-
-import { LAUNCH_TILE_DATA } from './launches';
 
 export const GET_LAUNCH_DETAILS = gql`
   query LaunchDetails($launchId: ID!) {
     launch(id: $launchId) {
+      id
       site
+      isBooked
       rocket {
+        id
+        name
         type
       }
-      ...LaunchTile
+      mission {
+        name
+        missionPatch
+      }
     }
   }
-  ${LAUNCH_TILE_DATA}
 `;
+```
 
+
+
+Now that we have a query, let's render a component with `useQuery` to execute it. This time, we'll also need to pass in the `launchId` as a variable to the query, which we'll do by adding a `variables` option to `useQuery`. The `launchId` comes through as a prop from the router.
+
+
+
+```tsx:title=src/pages/launch.tsx
 interface LaunchProps extends RouteComponentProps {
   launchId?: any;
 }
@@ -53,3 +72,7 @@ const Launch: React.FC<LaunchProps> = ({ launchId }) => {
 }
 
 export default Launch;
+```
+
+Just like before, we use the status of the query to render either a `loading` or `error` state, or data when the query completes.
+
